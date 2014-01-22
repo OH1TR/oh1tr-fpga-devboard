@@ -8,6 +8,15 @@ namespace fwtool
 		{
 			try
 			{
+				if(args[0]=="test")
+				{
+					Serial s = new Serial (args[1], 9600);
+					FPGA f = new FPGA (s);
+					f.writePort16b(0,32010);
+					Console.WriteLine(f.readPort16b(0));
+					return;
+				}
+
 				if(args.Length==3 && args[0]=="wc")
 				{
 					Serial s = new Serial (args[1], 9600);

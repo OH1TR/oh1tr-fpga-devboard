@@ -29,6 +29,10 @@ namespace fwtool
 			do
 			{
 				sp.Read(buf,0,1);
+				//Console.WriteLine(System.Text.Encoding.ASCII.GetString(buf,0,1));
+				if(buf[0]==10)
+					continue;
+
 				bs[i]=buf[0];
 				i++;
 			}

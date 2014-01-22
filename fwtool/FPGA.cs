@@ -64,7 +64,23 @@ namespace fwtool
 		{
 			con.sendString("FPGA W "+port.ToString("X2")+","+val.ToString("X2")+"\r");
 			string ret=con.readString();
-			if (ret != "OK")
+			if (!ret.Contains("OK"))
+				Console.WriteLine ("writePort failed:" + ret);
+		}
+
+		public void writePort16b(byte port,UInt16 val)
+		{
+			con.sendString("FPGA W2 "+port.ToString("X2")+","+val.ToString("X4")+"\r");
+			string ret=con.readString();
+			if (!ret.Contains("OK"))
+				Console.WriteLine ("writePort failed:" + ret);
+		}
+
+		public void writePort32b(byte port,UInt32 val)
+		{
+			con.sendString("FPGA W4 "+port.ToString("X2")+","+val.ToString("X8")+"\r");
+			string ret=con.readString();
+			if (!ret.Contains("OK"))
 				Console.WriteLine ("writePort failed:" + ret);
 		}
 
@@ -79,10 +95,39 @@ namespace fwtool
 				if(s.StartsWith("Result:"))
 					return(byte.Parse(s.Substring(7,2),NumberStyles.HexNumber));
 				else
-					Console.WriteLine ("writePort failed:" + s);
+					Console.WriteLine ("read Port failed:" + s);
 			}
 		}
 
+		public UInt16 readPort16b(byte port)
+		{
+			string s;
+			con.sendString("FPGA R2 "+port.ToString("X2")+"\r");
+			while(true)
+			{
+				s=con.readString();
+
+				if(s.StartsWith("Result:"))
+					return(UInt16.Parse(s.Substring(7,4),NumberStyles.HexNumber));
+				else
+					Console.WriteLine ("read Port failed:" + s);
+			}
+		}
+
+		public UInt32 readPort32b(byte port)
+		{
+			string s;
+			con.sendString("FPGA R4 "+port.ToString("X2")+"\r");
+			while(true)
+			{
+				s=con.readString();
+
+				if(s.StartsWith("Result:"))
+					return(UInt32.Parse(s.Substring(7,8),NumberStyles.HexNumber));
+				else
+					Console.WriteLine ("read Port failed:" + s);
+			}
+		}
 
 	}
 }
