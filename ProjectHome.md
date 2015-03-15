@@ -1,0 +1,1 @@
+General purpose FPGA Development board. Xilinx Spartan 6, Atmel SAM3U, high speed USB.
